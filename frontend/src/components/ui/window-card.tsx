@@ -26,7 +26,7 @@ export function WindowCard({ title, children, className, headerClassName }: Wind
             </div>
 
             {/* Window Content */}
-            <div className="bg-primary p-4 font-mono text-sm">
+            <div className="bg-primary p-4 font-mono text-sm text-white">
                 {children}
             </div>
         </div>

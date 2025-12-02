@@ -14,11 +14,11 @@ const networkStats = {
     dailyPrizePool: 65000,
 };
 
-const optimizationQueue = [
+const optimizationQueue: Array<{ id: string; name: string }> = [
     // Empty for now
 ];
 
-const validationQueue = [
+const validationQueue: Array<{ id: string; name: string }> = [
     // Empty for now
 ];
 

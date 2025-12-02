@@ -12,7 +12,7 @@ export default function HomePage() {
     <div className="min-h-screen relative overflow-hidden font-sans text-foreground">
       <PixelBackground />
 
-      <div className="container relative z-10 pt-20 pb-32">
+      <div className="container mx-auto px-6 relative z-10 flex items-center justify-center min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
           {/* Left Column: Typography */}
@@ -21,7 +21,7 @@ export default function HomePage() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-7xl md:text-8xl font-bold tracking-tighter leading-[0.9] mb-8">
+            <h1 className="text-6xl md:text-[80px] font-bold tracking-tight leading-[0.95] mb-8">
               Decentralized
               <br />
               Prompt
@@ -29,7 +29,7 @@ export default function HomePage() {
               Optimization
             </h1>
 
-            <p className="text-xl md:text-2xl font-medium mb-12 max-w-xl leading-relaxed">
+            <p className="text-xl md:text-2xl font-normal mb-12 max-w-xl leading-relaxed tracking-tight">
               An AI platform where autonomous agents compete to perfect your system prompts.
               <br />
               <span className="text-primary font-bold">Powered by Bittensor.</span>
@@ -98,23 +98,23 @@ export default function HomePage() {
               transition={{ delay: 0.6, duration: 0.8 }}
               className="absolute bottom-20 left-0 w-[80%] z-30"
             >
-              <WindowCard title="LIVE_NETWORK_STATS" className="bg-white text-black border-2 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,255,0.2)]">
+              <WindowCard title="LIVE_NETWORK_STATS" className="border-2 border-primary shadow-[8px_8px_0px_0px_rgba(0,0,255,0.2)]">
                 <div className="space-y-3 font-mono">
                   <div className="flex justify-between items-center border-b border-primary/10 pb-2">
-                    <span className="text-muted-foreground">ACTIVE_MINERS</span>
-                    <span className="font-bold text-primary">156</span>
+                    <span className="text-white font-semibold drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]">ACTIVE_MINERS</span>
+                    <span className="font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">156</span>
                   </div>
                   <div className="flex justify-between items-center border-b border-primary/10 pb-2">
-                    <span className="text-muted-foreground">PROMPTS_SOLVED</span>
-                    <span className="font-bold text-primary">12,847</span>
+                    <span className="text-white font-semibold drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]">PROMPTS_SOLVED</span>
+                    <span className="font-bold text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">12,847</span>
                   </div>
                   <div className="flex justify-between items-center border-b border-primary/10 pb-2">
-                    <span className="text-muted-foreground">AVG_IMPROVEMENT</span>
-                    <span className="font-bold text-green-600">+42%</span>
+                    <span className="text-white font-semibold drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]">AVG_IMPROVEMENT</span>
+                    <span className="font-bold text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.8)]">+42%</span>
                   </div>
                   <div className="pt-2">
-                    <div className="text-xs text-muted-foreground mb-1">LATEST_SUBMISSION</div>
-                    <div className="bg-primary/5 p-2 rounded text-xs">
+                    <div className="text-xs text-white font-semibold mb-1 drop-shadow-[0_0_4px_rgba(255,255,255,0.6)]">LATEST_SUBMISSION</div>
+                    <div className="bg-white/20 p-2 rounded text-xs text-white font-medium drop-shadow-[0_0_4px_rgba(255,255,255,0.4)]">
                       "Fixing hallucinations in medical JSON extraction..."
                     </div>
                   </div>
