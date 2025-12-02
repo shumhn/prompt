@@ -45,6 +45,7 @@ export function NeuralBackground() {
             radius: number;
 
             constructor() {
+                if (!canvas) return;
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.vx = (Math.random() - 0.5) * 0.5;
@@ -53,6 +54,7 @@ export function NeuralBackground() {
             }
 
             update() {
+                if (!canvas) return;
                 this.x += this.vx;
                 this.y += this.vy;
 
@@ -75,7 +77,10 @@ export function NeuralBackground() {
         // Initialize particles
         const particleCount = 80;
         for (let i = 0; i < particleCount; i++) {
-            particlesRef.current.push(new ParticleClass());
+            const particle = new ParticleClass();
+            if (particle.x !== undefined) { // Only add if properly initialized
+                particlesRef.current.push(particle);
+            }
         }
 
         const handleMouseMove = (e: MouseEvent) => {
