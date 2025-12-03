@@ -109,15 +109,119 @@ export default function OptimizePage() {
             const baseLatency = 800 + index * 150;
             const optimizedLatency = Math.round(baseLatency * 0.7);
 
+            // Detect task type from system prompt or query content
+            const isProductTask = systemPrompt.toLowerCase().includes('product') || systemPrompt.toLowerCase().includes('e-commerce');
+            const isSentimentTask = systemPrompt.toLowerCase().includes('sentiment') || systemPrompt.toLowerCase().includes('review');
+            const isInvoiceTask = systemPrompt.toLowerCase().includes('invoice') || systemPrompt.toLowerCase().includes('billing');
+            const isEmailTask = systemPrompt.toLowerCase().includes('email') || systemPrompt.toLowerCase().includes('intent');
+            const isJobTask = systemPrompt.toLowerCase().includes('job') || q.toLowerCase().includes('developer') || q.toLowerCase().includes('manager') || q.toLowerCase().includes('position');
+
+            let originalResponse = '';
+            let optimizedResponse = '';
+
+            if (isJobTask) {
+                // Job posting extraction
+                const titleMatch = q.match(/^([^-@.]+?)(?:\s+at|\s+-|$)/);
+                const jobTitle = titleMatch ? titleMatch[1].trim() : "Software Developer";
+                const companyMatch = q.match(/(?:at|@)\s+([^-.]+)/);
+                const company = companyMatch ? companyMatch[1].trim() : "TechCorp";
+                const salaryMatch = q.match(/\$?([\d,]+)k?(?:-|\s+to\s+)?([\d,]+)?k?/i);
+                const minSalary = salaryMatch ? parseInt(salaryMatch[1].replace(/,/g, '')) * (salaryMatch[1].includes('k') ? 1000 : 1) : 100000;
+                const maxSalary = salaryMatch && salaryMatch[2] ? parseInt(salaryMatch[2].replace(/,/g, '')) * 1000 : minSalary + 40000;
+
+                originalResponse = `Job posting: ${jobTitle} at ${company}
+Location: Remote
+Salary: $${minSalary.toLocaleString()} - $${maxSalary.toLocaleString()}
+Requirements: Technical skills, ${5}+ years experience
+Type: Full-time position`;
+
+                optimizedResponse = JSON.stringify({
+                    job_title: jobTitle,
+                    company: company,
+                    location: { city: "Remote", work_type: "remote" },
+                    salary_range: { min: minSalary, max: maxSalary, currency: "USD" },
+                    requirements: ["Technical skills", "Experience"],
+                    experience_years: 5
+                }, null, 2);
+
+            } else if (isSentimentTask) {
+                // Sentiment analysis
+                const isPositive = q.toLowerCase().includes('great') || q.toLowerCase().includes('excellent') || q.toLowerCase().includes('outstanding') || q.toLowerCase().includes('exceeded');
+                const isNegative = q.toLowerCase().includes('disappointed') || q.toLowerCase().includes('bad') || q.toLowerCase().includes('poor') || q.toLowerCase().includes('unhelpful');
+
+                originalResponse = `Review sentiment: ${isPositive ? 'POSITIVE' : isNegative ? 'NEGATIVE' : 'NEUTRAL'}
+Confidence: ${isPositive || isNegative ? '92%' : '65%'}
+Key phrases: ${isPositive ? 'excellent, satisfied' : isNegative ? 'disappointed, poor' : 'okay, acceptable'}
+Recommended action: ${isPositive ? 'Share as testimonial' : isNegative ? 'Urgent follow-up needed' : 'Monitor for updates'}`;
+
+                optimizedResponse = JSON.stringify({
+                    sentiment: isPositive ? "positive" : isNegative ? "negative" : "neutral",
+                    confidence: isPositive || isNegative ? 0.92 : 0.65,
+                    key_phrases: isPositive ? ["excellent", "satisfied"] : isNegative ? ["disappointed", "poor"] : ["okay"],
+                    recommended_action: isPositive ? "share_review" : isNegative ? "urgent_followup" : "monitor"
+                }, null, 2);
+
+            } else if (isInvoiceTask) {
+                // Invoice parsing
+                const invoiceMatch = q.match(/#?([A-Z]+-?\d+)/);
+                const invoiceNum = invoiceMatch ? invoiceMatch[1] : "INV-001";
+                const amountMatch = q.match(/\$?(\d+)/);
+                const total = amountMatch ? parseInt(amountMatch[1]) : 100;
+
+                originalResponse = `Invoice: ${invoiceNum}
+Date: 2024-12-01
+Vendor: Vendor Co.
+Total: $${total}.00
+Line items: 1 item
+Status: Pending payment`;
+
+                optimizedResponse = JSON.stringify({
+                    invoice_number: invoiceNum,
+                    date: "2024-12-01",
+                    total_amount: total,
+                    vendor_name: "Vendor Co.",
+                    line_items: [{ item: "Product/Service", quantity: 1, price: total }]
+                }, null, 2);
+
+            } else {
+                // Default: Product extraction
+                const priceMatch = q.match(/\$?([\d.]+)/);
+                const price = priceMatch ? parseFloat(priceMatch[1]) : 49.99;
+                const nameMatch = q.match(/^([^-.]+)/);
+                const productName = nameMatch ? nameMatch[1].trim() : "Product";
+
+                const features = [];
+                if (q.toLowerCase().includes('wireless')) features.push('Wireless connectivity');
+                if (q.toLowerCase().includes('bluetooth')) features.push('Bluetooth enabled');
+                if (q.toLowerCase().includes('battery')) features.push('Long battery life');
+                if (features.length === 0) features.push('Premium quality', 'Durable design');
+
+                let category = 'Electronics';
+                if (q.toLowerCase().includes('headphone')) category = 'Audio';
+                if (q.toLowerCase().includes('light') || q.toLowerCase().includes('bulb')) category = 'Lighting';
+
+                originalResponse = `Product: ${productName}
+Price: $${price}
+Category: ${category}
+Features: ${features.join(', ')}`;
+
+                optimizedResponse = JSON.stringify({
+                    product_name: productName,
+                    price: price,
+                    category: category,
+                    features: features
+                }, null, 2);
+            }
+
             return {
                 query: q,
                 originalResponse: {
-                    text: `Original extracted JSON for: ${q.slice(0, 80)}...`,
+                    text: originalResponse,
                     tokens: Math.round(baseTokens),
                     latency: baseLatency,
                 },
                 optimizedResponse: {
-                    text: `Optimized compact JSON for: ${q.slice(0, 80)}...`,
+                    text: optimizedResponse,
                     tokens: optimizedTokens,
                     latency: optimizedLatency,
                 },
@@ -158,7 +262,7 @@ export default function OptimizePage() {
             const next = [newTask, ...existing.filter((t: any) => t.id !== newTask.id)];
             if (typeof window !== 'undefined') localStorage.setItem('tasks', JSON.stringify(next));
             setTasks(prev => [newTask, ...prev]);
-        } catch {}
+        } catch { }
 
         await new Promise(resolve => setTimeout(resolve, 600));
 
@@ -173,7 +277,7 @@ export default function OptimizePage() {
                 const merged = [...stored, ...seedTasks.filter(t => !stored.find((s: any) => s.id === t.id))];
                 setTasks(merged);
             }
-        } catch {}
+        } catch { }
     }, []);
 
     useEffect(() => {
@@ -186,38 +290,269 @@ export default function OptimizePage() {
                     let status = task.status;
 
                     if (status === "queued") {
-                        progress = Math.min(progress + 5, 40);
+                        progress = Math.min(progress + 20, 40);
                         if (progress >= 20) status = "optimizing";
                     } else if (status === "optimizing") {
-                        progress = Math.min(progress + 10, 100);
+                        progress = Math.min(progress + 25, 100);
                         if (progress >= 100) {
                             progress = 100;
                             status = "validated";
                         }
                     }
 
-                    return { ...task, progress, status };
+                    // Generate score when validated
+                    let score = task.score;
+                    if (status === "validated" && score === null) {
+                        score = Math.round(88 + Math.random() * 10); // Random score between 88-98
+                    }
+
+                    return { ...task, progress, status, score };
                 });
 
                 try {
                     if (typeof window !== 'undefined') {
                         localStorage.setItem('tasks', JSON.stringify(updated));
                     }
-                } catch {}
+                } catch { }
 
                 return updated;
             });
-        }, 2000);
+        }, 500);
 
         return () => clearInterval(interval);
     }, []);
 
     const loadExample = () => {
-        setTaskName(exampleTemplate.taskName);
-        setSystemPrompt(exampleTemplate.systemPrompt);
-        setJsonSchema(exampleTemplate.jsonSchema);
-        setSampleQueries(exampleTemplate.sampleQueries);
-        setGroundTruth(exampleTemplate.groundTruth);
+        const templates = [
+            {
+                taskName: "E-commerce Product Extractor",
+                systemPrompt: `Extract structured product data from descriptions.
+
+Required fields:
+- product_name (string)
+- price (number)
+- category (string)
+- features (array of strings)
+
+Return valid JSON only.`,
+                jsonSchema: `{
+  "type": "object",
+  "properties": {
+    "product_name": { "type": "string" },
+    "price": { "type": "number" },
+    "category": { "type": "string" },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  },
+  "required": ["product_name", "price", "category"]
+}`,
+                sampleQueries: [
+                    "Wireless Bluetooth Headphones - Premium sound with ANC. 30h battery. $89.99",
+                    "Smart LED Bulb - WiFi enabled, 16M colors. Works with Alexa. $24.99"
+                ],
+                groundTruth: `{
+  "product_name": "Wireless Bluetooth Headphones",
+  "price": 89.99,
+  "category": "Audio",
+  "features": ["ANC", "30h Battery", "Wireless"]
+}`
+            },
+            {
+                taskName: "Customer Sentiment Analyzer",
+                systemPrompt: `Analyze customer reviews and extract sentiment data.
+
+Extract:
+- sentiment (positive/negative/neutral)
+- confidence (0-1)
+- key_phrases (array)
+- recommended_action (string)
+
+Format as JSON.`,
+                jsonSchema: `{
+  "type": "object",
+  "properties": {
+    "sentiment": {
+      "type": "string",
+      "enum": ["positive", "negative", "neutral"]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "key_phrases": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "recommended_action": { "type": "string" }
+  },
+  "required": ["sentiment", "confidence"]
+}`,
+                sampleQueries: [
+                    "This product exceeded my expectations! The quality is outstanding and delivery was fast.",
+                    "Very disappointed. Item arrived damaged and customer service was unhelpful."
+                ],
+                groundTruth: `{
+  "sentiment": "positive",
+  "confidence": 0.95,
+  "key_phrases": ["exceeded expectations", "outstanding quality"],
+  "recommended_action": "share_review"
+}`
+            },
+            {
+                taskName: "Invoice Data Parser",
+                systemPrompt: `Parse invoice text and extract billing information.
+
+Fields to extract:
+- invoice_number
+- date (YYYY-MM-DD)
+- total_amount
+- vendor_name
+- line_items (array with item, quantity, price)
+
+Return strict JSON.`,
+                jsonSchema: `{
+  "type": "object",
+  "properties": {
+    "invoice_number": { "type": "string" },
+    "date": { "type": "string", "format": "date" },
+    "total_amount": { "type": "number" },
+    "vendor_name": { "type": "string" },
+    "line_items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "item": { "type": "string" },
+          "quantity": { "type": "integer" },
+          "price": { "type": "number" }
+        }
+      }
+    }
+  },
+  "required": ["invoice_number", "total_amount", "vendor_name"]
+}`,
+                sampleQueries: [
+                    "Invoice #INV-2024-001 from TechSupply Co. Date: 2024-12-01. Items: Laptop x1 $999, Mouse x3 $15 each. Total: $1044",
+                    "Bill from Office Depot. Invoice: OD-5432. 2024-11-28. Paper (5 reams) $50, Pens (2 boxes) $12. Total $62"
+                ],
+                groundTruth: `{
+  "invoice_number": "INV-2024-001",
+  "date": "2024-12-01",
+  "total_amount": 1044,
+  "vendor_name": "TechSupply Co.",
+  "line_items": [
+    {"item": "Laptop", "quantity": 1, "price": 999},
+    {"item": "Mouse", "quantity": 3, "price": 15}
+  ]
+}`
+            },
+            {
+                taskName: "Email Intent Classifier",
+                systemPrompt: `Classify email intent and extract key information.
+
+Determine:
+- intent (support_request/sales_inquiry/complaint/feedback)
+- priority (low/medium/high/urgent)
+- subject_category
+- requires_response (boolean)
+
+Output JSON only.`,
+                jsonSchema: `{
+  "type": "object",
+  "properties": {
+    "intent": {
+      "type": "string",
+      "enum": ["support_request", "sales_inquiry", "complaint", "feedback"]
+    },
+    "priority": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "urgent"]
+    },
+    "subject_category": { "type": "string" },
+    "requires_response": { "type": "boolean" }
+  },
+  "required": ["intent", "priority", "requires_response"]
+}`,
+                sampleQueries: [
+                    "Hi, I'm interested in your enterprise pricing. Can you send me a quote for 50 users?",
+                    "URGENT: My account has been locked for 3 hours. I need immediate assistance!"
+                ],
+                groundTruth: `{
+  "intent": "sales_inquiry",
+  "priority": "medium",
+  "subject_category": "Enterprise Pricing",
+  "requires_response": true
+}`
+            },
+            {
+                taskName: "Job Posting Extractor",
+                systemPrompt: `Extract structured data from job postings.
+
+Parse:
+- job_title
+- company
+- location (city, remote/hybrid/onsite)
+- salary_range (min, max, currency)
+- requirements (array)
+- experience_years
+
+JSON format required.`,
+                jsonSchema: `{
+  "type": "object",
+  "properties": {
+    "job_title": { "type": "string" },
+    "company": { "type": "string" },
+    "location": {
+      "type": "object",
+      "properties": {
+        "city": { "type": "string" },
+        "work_type": {
+          "type": "string",
+          "enum": ["remote", "hybrid", "onsite"]
+        }
+      }
+    },
+    "salary_range": {
+      "type": "object",
+      "properties": {
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "currency": { "type": "string" }
+      }
+    },
+    "requirements": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "experience_years": { "type": "integer" }
+  },
+  "required": ["job_title", "company"]
+}`,
+                sampleQueries: [
+                    "Senior Full Stack Developer at TechCorp. Remote position. $120k-160k. Requirements: React, Node.js, 5+ years experience.",
+                    "Marketing Manager - NYC (Hybrid). $80-100K. Must have: 3+ years marketing, SEO expertise, team leadership."
+                ],
+                groundTruth: `{
+  "job_title": "Senior Full Stack Developer",
+  "company": "TechCorp",
+  "location": {"city": "Remote", "work_type": "remote"},
+  "salary_range": {"min": 120000, "max": 160000, "currency": "USD"},
+  "requirements": ["React", "Node.js"],
+  "experience_years": 5
+}`
+            }
+        ];
+
+        const randomTemplate = templates[Math.floor(Math.random() * templates.length)];
+
+        setTaskName(randomTemplate.taskName);
+        setSystemPrompt(randomTemplate.systemPrompt);
+        setJsonSchema(randomTemplate.jsonSchema);
+        setSampleQueries(randomTemplate.sampleQueries);
+        setGroundTruth(randomTemplate.groundTruth);
     };
 
     const addSampleQuery = () => {
@@ -547,7 +882,7 @@ export default function OptimizePage() {
                                                         </span>
                                                     )}
                                                 </div>
-                                                
+
                                                 {/* Progress Bar */}
                                                 {(task.status === "optimizing" || task.status === "queued") && (
                                                     <div className="mb-3">
@@ -565,7 +900,7 @@ export default function OptimizePage() {
                                                         </div>
                                                     </div>
                                                 )}
-                                                
+
                                                 <div className="flex items-center justify-between">
                                                     <div className={`flex items-center gap-1 text-xs font-medium px-2 py-1 rounded-md ${statusStyle.bg} ${statusStyle.color} border ${statusStyle.border}`}>
                                                         <StatusIcon className="h-3 w-3" />

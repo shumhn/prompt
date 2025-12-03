@@ -20,9 +20,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import MetricsChart from "@/components/MetricsChart";
 import PromptComparison from "@/components/PromptComparison";
-import DetailedAnalytics from "@/components/DetailedAnalytics";
 import SavingsChart from "@/components/SavingsChart";
 import QueryResultsComparison from "@/components/QueryResultsComparison";
 import TaskDetailSkeleton from "@/components/TaskDetailSkeleton";
@@ -253,8 +251,8 @@ export default function TaskDetailPage() {
                 {/* Main Grid Layout */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-                    {/* Left Column: Metrics & Analytics (4 cols) */}
-                    <div className="lg:col-span-4 space-y-6">
+                    {/* Left Column: Metrics & Score (3 cols) */}
+                    <div className="lg:col-span-3 flex flex-col gap-6 h-full">
                         {/* Primary Score Card */}
                         <DataModule className="bg-white/80">
                             <div className="flex flex-col items-center justify-center py-6">
@@ -298,34 +296,29 @@ export default function TaskDetailPage() {
                                 <div className="text-[9px] text-blue-600/70 uppercase tracking-wider">LATENCY_DROP</div>
                             </DataModule>
                         </div>
-
-                        {/* Detailed Analytics */}
-                        <DetailedAnalytics metrics={active.metrics || taskData.metrics} />
-
-                        {/* Cost Savings */}
-                        <SavingsChart costPerQuery={costSavingsPerQuery} />
                     </div>
 
-                    {/* Right Column: Comparison & Charts (8 cols) */}
-                    <div className="lg:col-span-8 space-y-6">
-                        {/* Prompt Comparison (Main Focus) */}
+                    {/* Right Column: Prompt Comparison (9 cols) */}
+                    <div className="lg:col-span-9 space-y-6">
                         <PromptComparison
                             originalPrompt={active.originalPrompt || active.systemPrompt || ""}
                             optimizedPrompt={active.optimizedPrompt || ""}
                         />
+                    </div>
 
-                        {/* Metrics Visualization */}
+                    {/* Bottom Section: Full Width Charts */}
+                    <div className="lg:col-span-12 space-y-6">
+                        {/* System Diagnostics - Full Width */}
                         {hasSamples && (
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: 0.2 }}
                             >
-                                <MetricsChart
-                                    originalTokens={avgOriginalTokens}
-                                    optimizedTokens={avgOptimizedTokens}
-                                    originalLatency={avgOriginalLatency}
-                                    optimizedLatency={avgOptimizedLatency}
+                                <SavingsChart
+                                    costPerQuery={costSavingsPerQuery}
+                                    tokenSavings={tokenSavings}
+                                    latencyImprovement={latencyImprovement}
                                 />
                             </motion.div>
                         )}

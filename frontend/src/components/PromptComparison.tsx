@@ -47,7 +47,7 @@ export default function PromptComparison({
 
     return (
         <DataModule
-            className={`transition-all duration-500 ease-in-out ${isExpanded ? "fixed inset-4 z-50 h-[calc(100vh-2rem)]" : "h-[600px]"}`}
+            className={`transition-all duration-500 ease-in-out ${isExpanded ? "fixed inset-4 z-50 h-[calc(100vh-2rem)]" : "h-[450px]"}`}
             title="PROMPT_EVOLUTION_MATRIX"
             icon={<Code2 className="w-4 h-4 text-primary" />}
             action={
@@ -99,7 +99,7 @@ export default function PromptComparison({
                                     )}
                                 </Button>
                             </div>
-                            <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed text-zinc-600 whitespace-pre-wrap">
+                            <div className="flex-1 p-6 overflow-auto font-mono text-sm leading-relaxed text-zinc-600 whitespace-pre-wrap">
                                 {originalPrompt}
                             </div>
                         </div>
@@ -121,7 +121,7 @@ export default function PromptComparison({
                                     )}
                                 </Button>
                             </div>
-                            <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed text-zinc-800 whitespace-pre-wrap relative">
+                            <div className="flex-1 p-6 overflow-auto font-mono text-sm leading-relaxed text-zinc-800 whitespace-pre-wrap relative">
                                 {/* Scanline effect */}
                                 <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(99,102,241,0.03)_50%)] bg-[length:100%_4px] pointer-events-none" />
                                 {optimizedPrompt}
@@ -137,7 +137,7 @@ export default function PromptComparison({
                                 <span className="flex items-center gap-1"><span className="w-2 h-2 bg-emerald-500/20 border border-emerald-500/50 rounded-sm"></span> ADDED</span>
                             </div>
                         </div>
-                        <div className="flex-1 p-6 overflow-auto font-mono text-xs leading-relaxed whitespace-pre-wrap">
+                        <div className="flex-1 p-6 overflow-auto font-mono text-sm leading-relaxed whitespace-pre-wrap">
                             {diff.map((part, index) => {
                                 const color = part.added
                                     ? "bg-emerald-500/10 text-emerald-700 border-b border-emerald-500/20"

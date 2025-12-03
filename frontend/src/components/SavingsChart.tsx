@@ -1,111 +1,122 @@
 "use client";
 
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { motion } from 'framer-motion';
-import { DollarSign } from 'lucide-react';
+import { DollarSign, Activity, Zap, Clock, TrendingUp } from 'lucide-react';
+import { DataModule } from "@/components/ui/data-module";
 
 interface SavingsChartProps {
     costPerQuery: number;
+    tokenSavings: string;
+    latencyImprovement: string;
 }
 
-export default function SavingsChart({ costPerQuery }: SavingsChartProps) {
-    // Generate projection data for 30 days
-    const projectionData = Array.from({ length: 30 }, (_, i) => {
-        const day = i + 1;
-        const dailySavings = costPerQuery * 1000; // 1000 queries per day
-        const cumulativeSavings = dailySavings * day;
-
-        return {
-            day: `Day ${day}`,
-            savings: parseFloat(cumulativeSavings.toFixed(2)),
-            daily: parseFloat(dailySavings.toFixed(2)),
-        };
-    });
-
-    const CustomTooltip = ({ active, payload, label }: any) => {
-        if (active && payload && payload.length) {
-            return (
-                <div className="bg-white border border-zinc-200 rounded-lg p-3 shadow-lg">
-                    <p className="text-zinc-900 font-medium mb-1">{label}</p>
-                    <p className="text-emerald-600 text-sm font-semibold">
-                        ${payload[0].value.toFixed(2)} saved
-                    </p>
-                    <p className="text-zinc-500 text-xs mt-1">
-                        Daily: ${payload[0].payload.daily.toFixed(2)}
-                    </p>
-                </div>
-            );
-        }
-        return null;
-    };
-
-    const monthlySavings = (costPerQuery * 1000 * 30).toFixed(2);
+export default function SavingsChart({ costPerQuery, tokenSavings, latencyImprovement }: SavingsChartProps) {
     const yearlySavings = (costPerQuery * 1000 * 365).toFixed(0);
 
+    // Parse percentages for progress bars (cap at 100)
+    const tokenPct = Math.min(parseFloat(tokenSavings), 100);
+    const latencyPct = Math.min(parseFloat(latencyImprovement), 100);
+    // Mock ROI calculation based on savings
+    const roiPct = Math.min((parseFloat(yearlySavings) / 50) * 100, 100);
+
+    const metrics = [
+        {
+            label: "COST_EFFICIENCY",
+            value: `$${yearlySavings}`,
+            suffix: "/yr",
+            pct: roiPct,
+            color: "bg-emerald-500",
+            icon: DollarSign,
+            iconColor: "text-emerald-500",
+            desc: "Projected annual savings"
+        },
+        {
+            label: "TOKEN_OPTIMIZATION",
+            value: `${tokenSavings}`,
+            suffix: "%",
+            pct: tokenPct,
+            color: "bg-blue-500",
+            icon: Zap,
+            iconColor: "text-blue-500",
+            desc: "Reduction in token usage"
+        },
+        {
+            label: "LATENCY_REDUCTION",
+            value: `${latencyImprovement}`,
+            suffix: "%",
+            pct: latencyPct,
+            color: "bg-violet-500",
+            icon: Clock,
+            iconColor: "text-violet-500",
+            desc: "Response time improvement"
+        },
+        {
+            label: "SYSTEM_HEALTH",
+            value: "98.5",
+            suffix: "%",
+            pct: 98.5,
+            color: "bg-amber-500",
+            icon: Activity,
+            iconColor: "text-amber-500",
+            desc: "Overall system stability"
+        }
+    ];
+
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="bg-white border border-zinc-200 rounded-xl p-6 shadow-sm"
-        >
-            <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-zinc-900 flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-emerald-500" />
-                    Cost Savings Projection
-                </h3>
-                <div className="flex gap-6 text-sm">
-                    <div className="text-right">
-                        <div className="text-zinc-500 text-xs">Monthly</div>
-                        <div className="text-emerald-600 font-bold">${monthlySavings}</div>
-                    </div>
-                    <div className="text-right">
-                        <div className="text-zinc-500 text-xs">Yearly</div>
-                        <div className="text-emerald-600 font-bold">${yearlySavings}</div>
-                    </div>
+        <DataModule
+            title="SYSTEM_DIAGNOSTICS"
+            icon={<Activity className="w-4 h-4 text-emerald-500" />}
+            className="h-full flex flex-col"
+            contentClassName="flex-1 flex flex-col"
+            action={
+                <div className="flex items-center gap-1 text-[9px] text-emerald-600 font-mono">
+                    <TrendingUp className="w-3 h-3" />
+                    OPTIMAL
                 </div>
-            </div>
+            }
+        >
+            <div className="grid grid-cols-2 gap-3 flex-1">
+                {metrics.map((metric, index) => (
+                    <motion.div
+                        key={metric.label}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                        className="group relative p-3 bg-zinc-50/50 border border-zinc-200/50 rounded-md hover:bg-white hover:shadow-sm transition-all duration-300 flex flex-col justify-between h-full"
+                    >
+                        <div>
+                            <div className="flex items-center justify-between mb-3">
+                                <div className={`p-1.5 rounded-sm bg-white border border-zinc-100 shadow-sm ${metric.iconColor}`}>
+                                    <metric.icon className="w-3.5 h-3.5" />
+                                </div>
+                                <div className="flex items-baseline gap-0.5">
+                                    <span className="font-mono text-lg font-bold text-zinc-800">{metric.value}</span>
+                                    <span className="text-[10px] text-zinc-400 font-mono">{metric.suffix}</span>
+                                </div>
+                            </div>
 
-            <ResponsiveContainer width="100%" height={200}>
-                <AreaChart data={projectionData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                    <defs>
-                        <linearGradient id="savingsGradient" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.2} />
-                            <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
-                        </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                    <XAxis
-                        dataKey="day"
-                        stroke="#71717a"
-                        style={{ fontSize: '11px', fontWeight: 500 }}
-                        interval={4}
-                        tickLine={false}
-                        axisLine={false}
-                        dy={10}
-                    />
-                    <YAxis
-                        stroke="#71717a"
-                        style={{ fontSize: '11px' }}
-                        tickFormatter={(value) => `$${value}`}
-                        tickLine={false}
-                        axisLine={false}
-                    />
-                    <Tooltip content={<CustomTooltip />} cursor={{ stroke: '#10b981', strokeWidth: 1, strokeDasharray: '3 3' }} />
-                    <Area
-                        type="monotone"
-                        dataKey="savings"
-                        stroke="#10b981"
-                        strokeWidth={2}
-                        fill="url(#savingsGradient)"
-                        animationDuration={1000}
-                    />
-                </AreaChart>
-            </ResponsiveContainer>
+                            <div className="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden mb-3">
+                                <motion.div
+                                    className={`h-full ${metric.color}`}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${metric.pct}%` }}
+                                    transition={{ duration: 1, delay: 0.5 + (index * 0.1) }}
+                                />
+                            </div>
+                        </div>
 
-            <div className="mt-4 text-center text-xs text-zinc-400">
-                Based on 1,000 queries/day at ${(costPerQuery * 1000).toFixed(2)} savings per 1,000 queries
+                        <div>
+                            <span className="text-[9px] font-bold text-zinc-500 tracking-wider block mb-1">{metric.label}</span>
+                            <p className="text-[9px] text-zinc-400 leading-tight line-clamp-2">
+                                {metric.desc}
+                            </p>
+                        </div>
+
+                        {/* Corner accent on hover */}
+                        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </motion.div>
+                ))}
             </div>
-        </motion.div>
+        </DataModule>
     );
 }

@@ -7,6 +7,7 @@ interface DataModuleProps {
     title?: string;
     children: React.ReactNode;
     className?: string;
+    contentClassName?: string;
     icon?: React.ReactNode;
     action?: React.ReactNode;
 }
@@ -15,6 +16,7 @@ export function DataModule({
     title,
     children,
     className,
+    contentClassName,
     icon,
     action
 }: DataModuleProps) {
@@ -45,10 +47,10 @@ export function DataModule({
             )}
 
             {/* Content */}
-            <div className="p-4 relative">
+            <div className={cn("p-4 relative", contentClassName)}>
                 {/* Subtle Grid Background */}
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
-                <div className="relative z-10">
+                <div className="relative z-10 h-full flex flex-col">
                     {children}
                 </div>
             </div>

@@ -89,41 +89,43 @@ export default function DetailedAnalytics({ metrics }: DetailedAnalyticsProps) {
 
     return (
         <DataModule
-            title="SYSTEM_DIAGNOSTICS"
+            title="METRICS_ANALYSIS"
             icon={<BarChart3 className="w-4 h-4 text-zinc-500" />}
             action={<TechBadge variant="default">ALL SYSTEMS NOMINAL</TechBadge>}
         >
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                 {analyticsItems.map((item, index) => (
                     <motion.div
                         key={item.label}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.1 }}
-                        className="group relative p-4 bg-zinc-50/50 border border-zinc-200/50 rounded-md hover:bg-white hover:shadow-sm transition-all duration-300"
+                        className="group relative p-4 bg-zinc-50/50 border border-zinc-200/50 rounded-md hover:bg-white hover:shadow-sm transition-all duration-300 flex flex-col justify-between h-full"
                     >
-                        <div className="flex items-start justify-between mb-3">
-                            <div className="flex items-center gap-2">
+                        <div>
+                            <div className="flex items-center justify-between mb-3">
                                 <div className={`p-1.5 rounded-sm bg-white border border-zinc-100 shadow-sm ${item.color}`}>
                                     <item.icon className="w-3.5 h-3.5" />
                                 </div>
-                                <span className="text-[10px] font-bold text-zinc-500 tracking-wider">{item.label}</span>
+                                <span className="font-mono text-lg font-bold text-zinc-800">{item.value}%</span>
                             </div>
-                            <span className="font-mono text-lg font-bold text-zinc-800">{item.value}%</span>
+
+                            <div className="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden mb-3">
+                                <motion.div
+                                    className={`h-full ${item.barColor}`}
+                                    initial={{ width: 0 }}
+                                    animate={{ width: `${item.value}%` }}
+                                    transition={{ duration: 1, delay: 0.5 + (index * 0.1) }}
+                                />
+                            </div>
                         </div>
 
-                        <div className="h-1.5 w-full bg-zinc-100 rounded-full overflow-hidden mb-3">
-                            <motion.div
-                                className={`h-full ${item.barColor}`}
-                                initial={{ width: 0 }}
-                                animate={{ width: `${item.value}%` }}
-                                transition={{ duration: 1, delay: 0.5 + (index * 0.1) }}
-                            />
+                        <div>
+                            <span className="text-[9px] font-bold text-zinc-500 tracking-wider block mb-1">{item.label}</span>
+                            <p className="text-[9px] text-zinc-400 leading-tight line-clamp-2">
+                                {item.desc}
+                            </p>
                         </div>
-
-                        <p className="text-[10px] text-zinc-400 leading-tight">
-                            {item.desc}
-                        </p>
 
                         {/* Corner accent on hover */}
                         <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-primary/30 opacity-0 group-hover:opacity-100 transition-opacity" />

@@ -212,9 +212,9 @@ export default function QueryResultsComparison({
                                             </div>
 
                                             {/* Response Content */}
-                                            <pre className="text-xs font-mono text-zinc-600 whitespace-pre-wrap leading-relaxed bg-white border border-zinc-200 rounded-lg p-4 max-h-96 overflow-auto shadow-sm">
+                                            <div className="text-xs font-mono text-zinc-600 whitespace-pre-wrap leading-relaxed bg-white border border-zinc-200 rounded-lg p-4 shadow-sm max-h-none overflow-visible">
                                                 {result.originalResponse.text}
-                                            </pre>
+                                            </div>
                                         </div>
 
                                         {/* Optimized Response */}
@@ -257,14 +257,14 @@ export default function QueryResultsComparison({
                                             </div>
 
                                             {/* Response Content */}
-                                            <pre className="text-xs font-mono text-zinc-600 whitespace-pre-wrap leading-relaxed bg-white border border-emerald-100 rounded-lg p-4 max-h-96 overflow-auto shadow-sm">
+                                            <div className="text-xs font-mono text-zinc-600 whitespace-pre-wrap leading-relaxed bg-white border border-emerald-100 rounded-lg p-4 shadow-sm max-h-none overflow-visible">
                                                 {result.optimizedResponse.text}
-                                            </pre>
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* Performance Summary */}
-                                    <div className="px-6 py-4 bg-gradient-to-r from-emerald-50 to-blue-50 border-t border-zinc-200">
+                                    <div className="px-6 py-4 bg-linear-to-r from-emerald-50 to-blue-50 border-t border-zinc-200">
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center gap-6">
                                                 <div>
