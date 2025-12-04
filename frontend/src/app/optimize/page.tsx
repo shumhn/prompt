@@ -59,12 +59,20 @@ const exampleTemplate = {
     jsonSchema: `{
   "type": "object",
   "properties": {
-    "product_name": { "type": "string" },
-    "price": { "type": "number" },
-    "category": { "type": "string" },
+    "product_name": { 
+      "type": "string" 
+    },
+    "price": { 
+      "type": "number" 
+    },
+    "category": { 
+      "type": "string" 
+    },
     "features": { 
       "type": "array",
-      "items": { "type": "string" }
+      "items": { 
+        "type": "string" 
+      }
     }
   },
   "required": ["product_name", "price", "category", "features"]
@@ -217,8 +225,8 @@ export default function OptimizePage() {
                             <span className="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
                             Workspace / Optimize
                         </div>
-                        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 flex items-center gap-3">
-                            <QuantumText text="NEW_OPTIMIZATION" />
+                        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 font-mono">
+                            NEW OPTIMIZATION
                         </h1>
                         <p className="text-zinc-500 text-xs max-w-xl font-mono mt-1">
                             Configure and launch a new prompt optimization task.
@@ -339,7 +347,7 @@ export default function OptimizePage() {
                                 <div className="space-y-6">
                                     <div className="flex items-center gap-2 px-6 py-4 bg-zinc-50/50 border-y border-zinc-100 -mx-6 mb-6">
                                         <BarChart3 className="w-4 h-4 text-primary" />
-                                        <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">Data_Config</span>
+                                        <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">Output_Format</span>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -355,18 +363,19 @@ export default function OptimizePage() {
                                                     options={{
                                                         minimap: { enabled: false },
                                                         fontSize: 12,
+                                                        fontWeight: '400',
                                                         lineNumbers: "off",
                                                         scrollBeyondLastLine: false,
                                                         automaticLayout: true,
                                                         padding: { top: 10, bottom: 10 },
-                                                        fontFamily: "monospace"
+                                                        fontFamily: "'SF Mono', 'Monaco', 'Consolas', monospace"
                                                     }}
                                                 />
                                             </div>
                                         </div>
 
                                         <div className="space-y-2">
-                                            <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Ground Truth (Optional)</Label>
+                                            <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Example Output (Optional)</Label>
                                             <div className="h-[200px] border border-zinc-200 rounded-md overflow-hidden bg-zinc-50">
                                                 <MonacoEditor
                                                     height="100%"
