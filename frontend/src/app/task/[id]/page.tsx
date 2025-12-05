@@ -208,7 +208,7 @@ export default function TaskDetailPage() {
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 border-b border-zinc-200 pb-6 w-full"
+                    className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 border-b border-zinc-200 pb-6 w-full bg-zinc-50/90 backdrop-blur-sm rounded-lg"
                 >
                     <div className="flex flex-col gap-2 shrink-0">
                         <Button
@@ -234,14 +234,14 @@ export default function TaskDetailPage() {
                         <Button
                             variant="outline"
                             onClick={exportResults}
-                            className="bg-white border-zinc-200 hover:bg-zinc-50 text-zinc-700 shadow-sm"
+                            className="bg-white border-zinc-200 hover:bg-zinc-50 text-zinc-700 shadow-sm font-mono text-[10px] uppercase tracking-wider"
                         >
                             <Download className="w-4 h-4 mr-2" />
                             EXPORT_DATA
                         </Button>
                         <Button
                             onClick={copyPrompt}
-                            className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
+                            className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 font-mono text-[10px] uppercase tracking-wider"
                         >
                             {copied ? <CheckCircle2 className="w-4 h-4 mr-2" /> : <Copy className="w-4 h-4 mr-2" />}
                             COPY_OPTIMIZED_PROMPT
@@ -255,7 +255,7 @@ export default function TaskDetailPage() {
                     {/* Left Column: Metrics & Score (3 cols) */}
                     <div className="lg:col-span-3 flex flex-col gap-6 h-full">
                         {/* Primary Score Card */}
-                        <DataModule className="bg-white/80">
+                        <DataModule className="bg-white/80 backdrop-blur-sm border-zinc-200/60">
                             <div className="flex flex-col items-center justify-center py-6">
                                 <div className="relative w-32 h-32 flex items-center justify-center mb-4">
                                     <svg className="w-full h-full transform -rotate-90">
@@ -286,12 +286,12 @@ export default function TaskDetailPage() {
 
                         {/* Quick Stats Grid */}
                         <div className="grid grid-cols-2 gap-4">
-                            <DataModule className="p-4 flex flex-col items-center justify-center text-center bg-emerald-50/50 border-emerald-100">
+                            <DataModule className="p-4 flex flex-col items-center justify-center text-center bg-emerald-50/50 border-emerald-100 backdrop-blur-sm">
                                 <Zap className="w-5 h-5 text-emerald-500 mb-2" />
                                 <div className="text-xl font-bold text-emerald-600">{tokenSavings}%</div>
                                 <div className="text-[9px] text-emerald-600/70 uppercase tracking-wider">TOKEN_SAVINGS</div>
                             </DataModule>
-                            <DataModule className="p-4 flex flex-col items-center justify-center text-center bg-blue-50/50 border-blue-100">
+                            <DataModule className="p-4 flex flex-col items-center justify-center text-center bg-blue-50/50 border-blue-100 backdrop-blur-sm">
                                 <Clock className="w-5 h-5 text-blue-500 mb-2" />
                                 <div className="text-xl font-bold text-blue-600">{latencyImprovement}%</div>
                                 <div className="text-[9px] text-blue-600/70 uppercase tracking-wider">LATENCY_DROP</div>

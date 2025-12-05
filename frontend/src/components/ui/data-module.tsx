@@ -47,7 +47,7 @@ export function DataModule({
             )}
 
             {/* Content */}
-            <div className={cn("p-4 relative", contentClassName)}>
+            <div className={cn("p-4 relative flex-1 min-h-0", contentClassName)}>
                 {/* Subtle Grid Background */}
                 <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.03] pointer-events-none" />
                 <div className="relative z-10 h-full flex flex-col">
