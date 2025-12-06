@@ -14,12 +14,18 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Sparkles, Send, Clock, CheckCircle2, XCircle, Zap, Activity, Plus, X, Lightbulb, Target, Battery, Gauge, BarChart3, ArrowRight, Terminal } from "lucide-react";
+import { Sparkles, Send, Clock, CheckCircle2, XCircle, Zap, Activity, Plus, X, Lightbulb, Target, Battery, Gauge, BarChart3, ArrowRight, MessageSquare, Info } from "lucide-react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { DataModule } from "@/components/ui/data-module";
 import { TechBadge } from "@/components/ui/tech-badge";
 import { QuantumText } from "@/components/ui/quantum-text";
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const MonacoEditor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
@@ -212,77 +218,77 @@ export default function OptimizePage() {
     }, []);
 
     return (
-        <div className="min-h-screen relative bg-zinc-50/50">
-            <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
-                {/* Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-zinc-200 pb-6"
-                >
-                    <div className="flex flex-col gap-1">
-                        <div className="flex items-center gap-2 text-[10px] font-bold text-primary mb-1 tracking-widest uppercase">
-                            <span className="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-                            Workspace / Optimize
-                        </div>
-                        <h1 className="text-3xl font-bold tracking-tight text-zinc-900 font-mono">
-                            NEW OPTIMIZATION
-                        </h1>
-                        <p className="text-zinc-500 text-xs max-w-xl font-mono mt-1">
-                            Configure and launch a new prompt optimization task.
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-3 mt-4 md:mt-0">
-                        <Button
-                            variant="outline"
-                            onClick={loadExample}
-                            className="h-9 px-4 bg-white hover:bg-zinc-50 text-zinc-700 border-zinc-200 font-mono text-[10px] uppercase tracking-wider"
-                        >
-                            <Lightbulb className="w-3 h-3 mr-2 text-amber-500" />
-                            Load_Example
-                        </Button>
-                    </div>
-                </motion.div>
-
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                    {/* Main Form */}
+        <TooltipProvider delayDuration={200}>
+            <div className="min-h-screen relative bg-zinc-50/50">
+                <div className="container mx-auto px-4 py-8 max-w-7xl relative z-10">
+                    {/* Header */}
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.1 }}
-                        className="lg:col-span-8 space-y-6"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex flex-col md:flex-row justify-between items-center mb-8 border-b border-zinc-200 pb-6"
                     >
-                        <form onSubmit={handleSubmit}>
-                            <DataModule
-                                className="bg-white/80 backdrop-blur-sm border-zinc-200/60"
-                                contentClassName="p-6 space-y-8"
+                        <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-2 text-[10px] font-bold text-primary mb-1 tracking-widest uppercase">
+                                <span className="flex h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                                Playground
+                            </div>
+                            <h1 className="text-3xl font-bold tracking-tight text-zinc-900 font-mono">
+                                NEW OPTIMIZATION
+                            </h1>
+                            <p className="text-zinc-500 text-xs max-w-xl font-mono mt-1">
+                                Configure and launch a new prompt optimization task.
+                            </p>
+                        </div>
+                        <div className="flex items-center gap-3 mt-4 md:mt-0">
+                            <Button
+                                variant="outline"
+                                onClick={loadExample}
+                                className="h-9 px-4 bg-white hover:bg-zinc-50 text-zinc-700 border-zinc-200 font-mono text-[10px] uppercase tracking-wider"
                             >
+                                <Lightbulb className="w-3 h-3 mr-2 text-amber-500" />
+                                Load_Example
+                            </Button>
+                        </div>
+                    </motion.div>
 
-                                {/* Task Details */}
-                                <div className="space-y-6">
-                                    <div className="flex items-center gap-2 px-6 py-4 bg-zinc-50/50 border-b border-zinc-100 -mx-6 -mt-6 mb-6">
-                                        <Target className="w-4 h-4 text-primary" />
-                                        <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">Task_Configuration</span>
-                                    </div>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                        {/* Main Form */}
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="lg:col-span-8 space-y-6"
+                        >
+                            <form onSubmit={handleSubmit}>
+                                <DataModule
+                                    className="bg-white/80 backdrop-blur-sm border-zinc-200/60"
+                                    contentClassName="p-6 space-y-8"
+                                >
 
-                                    <div className="grid gap-6">
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            <div className="space-y-2">
-                                                <Label htmlFor="taskName" className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Task Name</Label>
+                                    {/* Task Details */}
+                                    <div className="space-y-6">
+                                        <div className="flex items-center gap-2.5 px-6 py-4 border-b border-zinc-100 -mx-6 -mt-6 mb-8">
+                                            <Target className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                                            <h2 className="text-base font-extrabold text-zinc-900 uppercase tracking-wide font-mono">Task Configuration</h2>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                                            <div className="space-y-2 md:col-span-2">
+                                                <Label htmlFor="taskName" className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 font-medium">Task Name</Label>
                                                 <Input
                                                     id="taskName"
-                                                    placeholder="e.g., E-commerce Product Parser"
+                                                    placeholder="e.g., E-commerce Product Extractor"
                                                     value={taskName}
                                                     onChange={(e) => setTaskName(e.target.value)}
-                                                    className="bg-zinc-50 border-zinc-200 focus:border-primary/50 font-mono text-sm h-10"
+                                                    className="w-full bg-zinc-50 border-zinc-200 focus:border-primary/50 font-mono text-sm h-10"
                                                     required
                                                 />
                                             </div>
 
                                             <div className="space-y-2">
-                                                <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Model</Label>
+                                                <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 font-medium">Model</Label>
                                                 <Select value={model} onValueChange={setModel}>
-                                                    <SelectTrigger className="bg-zinc-50 border-zinc-200 focus:border-primary/50 font-mono text-sm h-10">
+                                                    <SelectTrigger className="w-full bg-zinc-50 border-zinc-200 focus:border-primary/50 font-mono text-sm h-10">
                                                         <SelectValue placeholder="Select Model" />
                                                     </SelectTrigger>
                                                     <SelectContent>
@@ -292,253 +298,276 @@ export default function OptimizePage() {
                                                     </SelectContent>
                                                 </Select>
                                             </div>
-                                        </div>
 
-                                        <div className="space-y-2">
-                                            <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Optimization Objective</Label>
-                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                                                {[
-                                                    { id: "token_efficiency", label: "Token Efficiency", icon: Battery, desc: "Minimize tokens" },
-                                                    { id: "speed", label: "Speed", icon: Zap, desc: "Reduce latency" },
-                                                    { id: "balanced", label: "Balanced", icon: Gauge, desc: "All three" },
-                                                ].map((obj) => (
-                                                    <div
-                                                        key={obj.id}
-                                                        onClick={() => setObjective(obj.id)}
-                                                        className={`cursor-pointer p-3 rounded-lg border transition-all duration-200 ${objective === obj.id
-                                                            ? "bg-primary/5 border-primary ring-1 ring-primary/20"
-                                                            : "bg-zinc-50 border-zinc-200 hover:border-primary/30 hover:bg-zinc-100"
-                                                            }`}
-                                                    >
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <obj.icon className={`w-3.5 h-3.5 ${objective === obj.id ? "text-primary" : "text-zinc-400"}`} />
-                                                            <span className={`text-xs font-bold ${objective === obj.id ? "text-primary" : "text-zinc-700"}`}>
-                                                                {obj.label}
-                                                            </span>
-                                                        </div>
-                                                        <p className="text-[10px] text-zinc-500 font-mono">{obj.desc}</p>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* System Prompt */}
-                                <div className="space-y-6">
-                                    <div className="flex items-center gap-2 px-6 py-4 bg-zinc-50/50 border-y border-zinc-100 -mx-6 mb-6">
-                                        <Terminal className="w-4 h-4 text-primary" />
-                                        <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">System_Prompt</span>
-                                    </div>
-                                    <div className="space-y-2">
-                                        <Label htmlFor="systemPrompt" className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Initial Prompt</Label>
-                                        <Textarea
-                                            id="systemPrompt"
-                                            placeholder="Enter your current system prompt here..."
-                                            value={systemPrompt}
-                                            onChange={(e) => setSystemPrompt(e.target.value)}
-                                            className="min-h-[150px] font-mono text-xs bg-zinc-50 border-zinc-200 focus:border-primary/50"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-
-                                {/* Data Configuration */}
-                                <div className="space-y-6">
-                                    <div className="flex items-center gap-2 px-6 py-4 bg-zinc-50/50 border-y border-zinc-100 -mx-6 mb-6">
-                                        <BarChart3 className="w-4 h-4 text-primary" />
-                                        <span className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono">Output_Format</span>
-                                    </div>
-
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-2">
-                                            <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">JSON Schema</Label>
-                                            <div className="h-[200px] border border-zinc-200 rounded-md overflow-hidden bg-zinc-50">
-                                                <MonacoEditor
-                                                    height="100%"
-                                                    language="json"
-                                                    theme="light"
-                                                    value={jsonSchema}
-                                                    onChange={(value) => setJsonSchema(value || "")}
-                                                    options={{
-                                                        minimap: { enabled: false },
-                                                        fontSize: 12,
-                                                        fontWeight: '400',
-                                                        lineNumbers: "off",
-                                                        scrollBeyondLastLine: false,
-                                                        automaticLayout: true,
-                                                        padding: { top: 10, bottom: 10 },
-                                                        fontFamily: "'SF Mono', 'Monaco', 'Consolas', monospace"
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="space-y-2">
-                                            <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Example Output (Optional)</Label>
-                                            <div className="h-[200px] border border-zinc-200 rounded-md overflow-hidden bg-zinc-50">
-                                                <MonacoEditor
-                                                    height="100%"
-                                                    language="json"
-                                                    theme="light"
-                                                    value={groundTruth}
-                                                    onChange={(value) => setGroundTruth(value || "")}
-                                                    options={{
-                                                        minimap: { enabled: false },
-                                                        fontSize: 12,
-                                                        lineNumbers: "off",
-                                                        scrollBeyondLastLine: false,
-                                                        automaticLayout: true,
-                                                        padding: { top: 10, bottom: 10 },
-                                                        fontFamily: "monospace"
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="space-y-3">
-                                        <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">Sample Queries</Label>
-                                        {sampleQueries.map((query, index) => (
-                                            <div key={index} className="flex gap-2">
-                                                <Input
-                                                    value={query}
-                                                    onChange={(e) => updateQuery(index, e.target.value)}
-                                                    placeholder={`Example query ${index + 1}`}
-                                                    className="font-mono text-xs bg-zinc-50 border-zinc-200 focus:border-primary/50"
-                                                />
-                                                {sampleQueries.length > 1 && (
-                                                    <Button
-                                                        type="button"
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        onClick={() => removeQuery(index)}
-                                                        className="text-zinc-400 hover:text-red-500 hover:bg-red-50"
-                                                    >
-                                                        <X className="w-4 h-4" />
-                                                    </Button>
-                                                )}
-                                            </div>
-                                        ))}
-                                        <Button
-                                            type="button"
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={addQuery}
-                                            className="text-xs font-mono border-dashed border-zinc-300 text-zinc-500 hover:text-primary hover:border-primary/50"
-                                        >
-                                            <Plus className="w-3 h-3 mr-2" />
-                                            Add_Query
-                                        </Button>
-                                    </div>
-                                </div>
-
-                                <div className="pt-4 flex justify-end">
-                                    <Button
-                                        type="submit"
-                                        disabled={isSubmitting}
-                                        className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 font-mono text-xs uppercase tracking-wider h-10 px-6"
-                                    >
-                                        {isSubmitting ? (
-                                            <>
-                                                <Activity className="w-4 h-4 mr-2 animate-spin" />
-                                                INITIALIZING...
-                                            </>
-                                        ) : (
-                                            <>
-                                                <Sparkles className="w-4 h-4 mr-2" />
-                                                START_OPTIMIZATION
-                                            </>
-                                        )}
-                                    </Button>
-                                </div>
-                            </DataModule>
-                        </form>
-                    </motion.div>
-
-                    {/* Sidebar */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="lg:col-span-4 space-y-6"
-                    >
-                        <DataModule className="p-0 bg-white/80 backdrop-blur-sm border-zinc-200/60 overflow-hidden">
-                            <div className="p-4 border-b border-zinc-100 bg-zinc-50/50">
-                                <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono flex items-center gap-2">
-                                    <Activity className="w-4 h-4 text-primary" />
-                                    Recent_Activity
-                                </h3>
-                            </div>
-                            <div className="divide-y divide-zinc-100">
-                                {tasks.map((task) => (
-                                    <Link key={task.id} href={`/task/${task.id}`}>
-                                        <div className="p-4 hover:bg-zinc-50 transition-colors group">
-                                            <div className="flex items-start justify-between mb-2">
-                                                <TechBadge
-                                                    variant={
-                                                        task.status === "validated" ? "success" :
-                                                            task.status === "failed" ? "danger" :
-                                                                task.status === "optimizing" ? "default" : "neutral"
-                                                    }
-                                                    animate={task.status === "optimizing"}
-                                                    className="scale-90 origin-top-left"
-                                                >
-                                                    {task.status}
-                                                </TechBadge>
-                                                <span className="text-[10px] text-zinc-400 font-mono">
-                                                    {new Date(task.createdAt).toLocaleDateString()}
-                                                </span>
-                                            </div>
-                                            <h4 className="text-sm font-bold text-zinc-900 mb-1 font-mono group-hover:text-primary transition-colors truncate">
-                                                {task.name}
-                                            </h4>
-                                            {task.score && (
-                                                <div className="flex items-center gap-2 mt-2">
-                                                    <div className="text-xs font-bold text-primary font-mono bg-primary/5 px-2 py-0.5 rounded">
-                                                        SCORE: {task.score}
-                                                    </div>
+                                            <div className="space-y-2">
+                                                <div className="flex items-baseline gap-1">
+                                                    <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 font-medium">Objective</Label>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" className="text-zinc-400 hover:text-zinc-600 transition-colors">
+                                                                <Info className="w-3.5 h-3.5" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top" className="max-w-[280px] text-xs leading-relaxed">
+                                                            <p><strong>Token Efficiency:</strong> Minimize token usage while maintaining quality.</p>
+                                                            <p className="mt-1"><strong>Speed:</strong> Optimize for faster response times.</p>
+                                                            <p className="mt-1"><strong>Balanced:</strong> Equal focus on efficiency and speed.</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
                                                 </div>
-                                            )}
-                                            {task.status === "optimizing" && (
-                                                <div className="mt-2 w-full bg-zinc-100 h-1 rounded-full overflow-hidden">
-                                                    <motion.div
-                                                        className="h-full bg-primary"
-                                                        initial={{ width: 0 }}
-                                                        animate={{ width: `${task.progress}%` }}
+                                                <Select value={objective} onValueChange={setObjective}>
+                                                    <SelectTrigger className="w-full bg-zinc-50 border-zinc-200 focus:border-primary/50 font-mono text-sm h-10">
+                                                        <SelectValue placeholder="Select" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="token_efficiency">Token Efficiency</SelectItem>
+                                                        <SelectItem value="speed">Speed</SelectItem>
+                                                        <SelectItem value="balanced">Balanced</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* System Prompt */}
+                                    <div className="space-y-6">
+                                        <div className="flex items-center gap-2.5 px-6 py-4 border-y border-zinc-100 -mx-6 mb-8">
+                                            <MessageSquare className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                                            <h2 className="text-base font-extrabold text-zinc-900 uppercase tracking-wide font-mono">System Prompt</h2>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="flex items-baseline gap-1">
+                                                <Label htmlFor="systemPrompt" className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 font-medium">Initial Prompt</Label>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <button type="button" className="text-zinc-400 hover:text-zinc-600 transition-colors">
+                                                            <Info className="w-3.5 h-3.5" />
+                                                        </button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent side="top" className="max-w-[280px] text-xs leading-relaxed">
+                                                        <p>Enter the system prompt you want to optimize. Include your current instructions, constraints, and expected behavior.</p>
+                                                        <p className="mt-1.5 text-sky-600">Tip: Be specific about the output format you expect.</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            </div>
+                                            <Textarea
+                                                id="systemPrompt"
+                                                placeholder="Enter your current system prompt here..."
+                                                value={systemPrompt}
+                                                onChange={(e) => setSystemPrompt(e.target.value)}
+                                                className="min-h-[150px] font-mono text-xs bg-zinc-50 border-zinc-200 focus:border-primary/50"
+                                                required
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Data Configuration */}
+                                    <div className="space-y-6">
+                                        <div className="flex items-center gap-2.5 px-6 py-4 border-y border-zinc-100 -mx-6 mb-8">
+                                            <BarChart3 className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                                            <h2 className="text-base font-extrabold text-zinc-900 uppercase tracking-wide font-mono">Response Format</h2>
+                                        </div>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                                            <div className="space-y-2">
+                                                <div className="flex items-baseline gap-1">
+                                                    <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 font-medium">JSON Schema</Label>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" className="text-zinc-400 hover:text-zinc-600 transition-colors">
+                                                                <Info className="w-3.5 h-3.5" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top" className="max-w-[280px] text-xs leading-relaxed">
+                                                            <p>Define the expected JSON structure for responses. This helps validate and score outputs.</p>
+                                                            <p className="mt-1.5 text-sky-600">Include "type", "properties", and "required" fields.</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </div>
+                                                <div className="h-[200px] border border-zinc-200 rounded-md overflow-hidden bg-zinc-50">
+                                                    <MonacoEditor
+                                                        height="100%"
+                                                        language="json"
+                                                        theme="light"
+                                                        value={jsonSchema}
+                                                        onChange={(value) => setJsonSchema(value || "")}
+                                                        options={{
+                                                            minimap: { enabled: false },
+                                                            fontSize: 12,
+                                                            fontWeight: '400',
+                                                            lineNumbers: "off",
+                                                            scrollBeyondLastLine: false,
+                                                            automaticLayout: true,
+                                                            padding: { top: 10, bottom: 10 },
+                                                            fontFamily: "'SF Mono', 'Monaco', 'Consolas', monospace"
+                                                        }}
                                                     />
                                                 </div>
-                                            )}
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                            <div className="p-3 bg-zinc-50/50 border-t border-zinc-100 text-center">
-                                <Link href="/tasks" className="text-[10px] font-bold text-zinc-500 hover:text-primary transition-colors uppercase tracking-wider font-mono flex items-center justify-center gap-1">
-                                    View_All_Tasks
-                                    <ArrowRight className="w-3 h-3" />
-                                </Link>
-                            </div>
-                        </DataModule>
+                                            </div>
 
-                        <DataModule className="p-5 bg-gradient-to-br from-primary/5 to-transparent border-primary/10">
-                            <div className="flex items-start gap-3">
-                                <div className="p-2 bg-white rounded-lg shadow-sm">
-                                    <Lightbulb className="w-5 h-5 text-primary" />
+                                            <div className="space-y-2">
+                                                <div className="flex items-baseline gap-1">
+                                                    <Label className="text-[10px] font-mono uppercase tracking-wider text-zinc-600 font-medium">Sample Queries</Label>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <button type="button" className="text-zinc-400 hover:text-zinc-600 transition-colors">
+                                                                <Info className="w-3.5 h-3.5" />
+                                                            </button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="top" className="max-w-[280px] text-xs leading-relaxed">
+                                                            <p>Add example inputs that your prompt will process. These are used to test and validate the optimization.</p>
+                                                            <p className="mt-1.5 text-sky-600">More diverse examples improve optimization quality.</p>
+                                                        </TooltipContent>
+                                                    </Tooltip>
+                                                </div>
+                                                <div className="h-[200px] border border-zinc-200 rounded-md bg-zinc-50 flex flex-col">
+                                                    <div className="flex-1 overflow-y-auto p-3 space-y-2">
+                                                        {sampleQueries.map((query, index) => (
+                                                            <div key={index} className="flex gap-2">
+                                                                <Input
+                                                                    value={query}
+                                                                    onChange={(e) => updateQuery(index, e.target.value)}
+                                                                    placeholder={`Query ${index + 1}`}
+                                                                    className="w-full font-mono text-xs bg-white border-zinc-200 focus:border-primary/50 h-10"
+                                                                />
+                                                                {sampleQueries.length > 1 && (
+                                                                    <Button
+                                                                        type="button"
+                                                                        variant="ghost"
+                                                                        size="icon"
+                                                                        onClick={() => removeQuery(index)}
+                                                                        className="text-zinc-400 hover:text-red-500 hover:bg-red-50 h-10 w-10 shrink-0"
+                                                                    >
+                                                                        <X className="w-4 h-4" />
+                                                                    </Button>
+                                                                )}
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                    <div className="p-3 pt-0">
+                                                        <Button
+                                                            type="button"
+                                                            variant="outline"
+                                                            size="sm"
+                                                            onClick={addQuery}
+                                                            className="w-full text-xs font-mono border-dashed border-zinc-300 text-zinc-500 hover:text-primary hover:border-primary/50 h-10 bg-white"
+                                                        >
+                                                            <Plus className="w-3 h-3 mr-2" />
+                                                            Add Query
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div className="pt-4 flex justify-end">
+                                        <Button
+                                            type="submit"
+                                            disabled={isSubmitting}
+                                            className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 font-mono text-xs uppercase tracking-wider h-10 px-6"
+                                        >
+                                            {isSubmitting ? (
+                                                <>
+                                                    <Activity className="w-4 h-4 mr-2 animate-spin" />
+                                                    INITIALIZING...
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <Sparkles className="w-4 h-4 mr-2" />
+                                                    START_OPTIMIZATION
+                                                </>
+                                            )}
+                                        </Button>
+                                    </div>
+                                </DataModule>
+                            </form>
+                        </motion.div>
+
+                        {/* Sidebar */}
+                        <motion.div
+                            initial={{ opacity: 0, x: 20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="lg:col-span-4 space-y-6"
+                        >
+                            <DataModule className="p-0 bg-white/80 backdrop-blur-sm border-zinc-200/60 overflow-hidden">
+                                <div className="p-4 border-b border-zinc-100 bg-zinc-50/50">
+                                    <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono flex items-center gap-2">
+                                        <Activity className="w-4 h-4 text-primary" />
+                                        Recent_Activity
+                                    </h3>
                                 </div>
-                                <div>
-                                    <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono mb-1">
-                                        Pro_Tip
-                                    </h4>
-                                    <p className="text-xs text-zinc-600 leading-relaxed">
-                                        Providing a <span className="font-mono font-bold text-primary">Ground Truth</span> example significantly improves the accuracy of the optimization process by giving the model a clear target to aim for.
-                                    </p>
+                                <div className="divide-y divide-zinc-100">
+                                    {tasks.map((task) => (
+                                        <Link key={task.id} href={`/task/${task.id}`}>
+                                            <div className="p-4 hover:bg-zinc-50 transition-colors group">
+                                                <div className="flex items-start justify-between mb-2">
+                                                    <TechBadge
+                                                        variant={
+                                                            task.status === "validated" ? "success" :
+                                                                task.status === "failed" ? "danger" :
+                                                                    task.status === "optimizing" ? "default" : "neutral"
+                                                        }
+                                                        animate={task.status === "optimizing"}
+                                                        className="scale-90 origin-top-left"
+                                                    >
+                                                        {task.status}
+                                                    </TechBadge>
+                                                    <span className="text-[10px] text-zinc-400 font-mono">
+                                                        {new Date(task.createdAt).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                <h4 className="text-sm font-bold text-zinc-900 mb-1 font-mono group-hover:text-primary transition-colors truncate">
+                                                    {task.name}
+                                                </h4>
+                                                {task.score && (
+                                                    <div className="flex items-center gap-2 mt-2">
+                                                        <div className="text-xs font-bold text-primary font-mono bg-primary/5 px-2 py-0.5 rounded">
+                                                            SCORE: {task.score}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                {task.status === "optimizing" && (
+                                                    <div className="mt-2 w-full bg-zinc-100 h-1 rounded-full overflow-hidden">
+                                                        <motion.div
+                                                            className="h-full bg-primary"
+                                                            initial={{ width: 0 }}
+                                                            animate={{ width: `${task.progress}%` }}
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </Link>
+                                    ))}
                                 </div>
-                            </div>
-                        </DataModule>
-                    </motion.div>
-                </div>
-            </div>
-        </div>
+                                <div className="p-3 bg-zinc-50/50 border-t border-zinc-100 text-center">
+                                    <Link href="/tasks" className="text-[10px] font-bold text-zinc-500 hover:text-primary transition-colors uppercase tracking-wider font-mono flex items-center justify-center gap-1">
+                                        View_All_Tasks
+                                        <ArrowRight className="w-3 h-3" />
+                                    </Link>
+                                </div>
+                            </DataModule>
+
+                            <DataModule className="p-5 bg-gradient-to-br from-primary/5 to-transparent border-primary/10">
+                                <div className="flex items-start gap-3">
+                                    <div className="p-2 bg-white rounded-lg shadow-sm">
+                                        <Lightbulb className="w-5 h-5 text-primary" />
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono mb-1">
+                                            Pro_Tip
+                                        </h4>
+                                        <p className="text-xs text-zinc-600 leading-relaxed">
+                                            Providing a <span className="font-mono font-bold text-primary">Ground Truth</span> example significantly improves the accuracy of the optimization process by giving the model a clear target to aim for.
+                                        </p>
+                                    </div>
+                                </div>
+                            </DataModule>
+                        </motion.div>
+                    </div>
+                </div >
+            </div >
+        </TooltipProvider>
     );
 }

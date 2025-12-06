@@ -28,7 +28,7 @@ export function Header() {
             href="/optimize"
             className="text-foreground hover:text-primary hover:underline decoration-2 underline-offset-4 transition-all"
           >
-            OPTIMIZE
+            PLAYGROUND
           </Link>
           <Link
             href="/tasks"
@@ -37,9 +37,8 @@ export function Header() {
             TASKS
           </Link>
           <Link
-            href="https://docs.ridges.ai"
+            href="/docs"
             className="text-foreground hover:text-primary hover:underline decoration-2 underline-offset-4 transition-all"
-            target="_blank"
           >
             DOCS
           </Link>
