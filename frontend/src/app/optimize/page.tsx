@@ -239,16 +239,6 @@ export default function OptimizePage() {
                                 Configure and launch a new prompt optimization task.
                             </p>
                         </div>
-                        <div className="flex items-center gap-3 mt-4 md:mt-0">
-                            <Button
-                                variant="outline"
-                                onClick={loadExample}
-                                className="h-9 px-4 bg-white hover:bg-zinc-50 text-zinc-700 border-zinc-200 font-mono text-[10px] uppercase tracking-wider"
-                            >
-                                <Lightbulb className="w-3 h-3 mr-2 text-amber-500" />
-                                Load_Example
-                            </Button>
-                        </div>
                     </motion.div>
 
                     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -267,9 +257,20 @@ export default function OptimizePage() {
 
                                     {/* Task Details */}
                                     <div className="space-y-6">
-                                        <div className="flex items-center gap-2.5 px-6 py-4 border-b border-zinc-100 -mx-6 -mt-6 mb-8">
-                                            <Target className="w-5 h-5 text-primary" strokeWidth={2.5} />
-                                            <h2 className="text-base font-extrabold text-zinc-900 uppercase tracking-wide font-mono">Task Configuration</h2>
+                                        <div className="flex items-center justify-between px-6 py-3 border-b border-zinc-100 -mx-6 -mt-6 mb-5">
+                                            <div className="flex items-center gap-2.5">
+                                                <Target className="w-5 h-5 text-primary" strokeWidth={2.5} />
+                                                <h2 className="text-base font-extrabold text-zinc-900 uppercase tracking-wide font-mono">Task Configuration</h2>
+                                            </div>
+                                            <Button
+                                                type="button"
+                                                variant="outline"
+                                                onClick={loadExample}
+                                                className="h-8 px-3 bg-amber-50 hover:bg-amber-100 text-amber-700 border-amber-200 font-mono text-[10px] uppercase tracking-wider font-bold hover:border-amber-300 transition-all"
+                                            >
+                                                <Lightbulb className="w-3.5 h-3.5 mr-1.5 text-amber-500" />
+                                                Load_Example
+                                            </Button>
                                         </div>
 
                                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -330,8 +331,8 @@ export default function OptimizePage() {
                                     </div>
 
                                     {/* System Prompt */}
-                                    <div className="space-y-6">
-                                        <div className="flex items-center gap-2.5 px-6 py-4 border-y border-zinc-100 -mx-6 mb-8">
+                                    <div className="space-y-4 mt-6">
+                                        <div className="flex items-center gap-2.5 px-6 py-3 border-y border-zinc-100 -mx-6 mb-4">
                                             <MessageSquare className="w-5 h-5 text-primary" strokeWidth={2.5} />
                                             <h2 className="text-base font-extrabold text-zinc-900 uppercase tracking-wide font-mono">System Prompt</h2>
                                         </div>
@@ -362,8 +363,8 @@ export default function OptimizePage() {
                                     </div>
 
                                     {/* Data Configuration */}
-                                    <div className="space-y-6">
-                                        <div className="flex items-center gap-2.5 px-6 py-4 border-y border-zinc-100 -mx-6 mb-8">
+                                    <div className="space-y-4 mt-6">
+                                        <div className="flex items-center gap-2.5 px-6 py-3 border-y border-zinc-100 -mx-6 mb-4">
                                             <BarChart3 className="w-5 h-5 text-primary" strokeWidth={2.5} />
                                             <h2 className="text-base font-extrabold text-zinc-900 uppercase tracking-wide font-mono">Response Format</h2>
                                         </div>
@@ -388,7 +389,7 @@ export default function OptimizePage() {
                                                     <MonacoEditor
                                                         height="100%"
                                                         language="json"
-                                                        theme="light"
+                                                        theme="vs"
                                                         value={jsonSchema}
                                                         onChange={(value) => setJsonSchema(value || "")}
                                                         options={{
@@ -399,7 +400,19 @@ export default function OptimizePage() {
                                                             scrollBeyondLastLine: false,
                                                             automaticLayout: true,
                                                             padding: { top: 10, bottom: 10 },
-                                                            fontFamily: "'SF Mono', 'Monaco', 'Consolas', monospace"
+                                                            fontFamily: "'SF Mono', 'Monaco', 'Consolas', monospace",
+                                                            scrollbar: {
+                                                                vertical: 'hidden',
+                                                                horizontal: 'hidden',
+                                                                handleMouseWheel: true
+                                                            },
+                                                            overviewRulerLanes: 0,
+                                                            hideCursorInOverviewRuler: true,
+                                                            overviewRulerBorder: false,
+                                                            wordWrap: 'on',
+                                                            renderLineHighlight: 'none',
+                                                            folding: false,
+                                                            glyphMargin: false
                                                         }}
                                                     />
                                                 </div>
@@ -493,15 +506,15 @@ export default function OptimizePage() {
                         >
                             <DataModule className="p-0 bg-white/80 backdrop-blur-sm border-zinc-200/60 overflow-hidden">
                                 <div className="p-4 border-b border-zinc-100 bg-zinc-50/50">
-                                    <h3 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono flex items-center gap-2">
-                                        <Activity className="w-4 h-4 text-primary" />
+                                    <h3 className="text-xs font-bold text-zinc-700 uppercase tracking-wider font-mono flex items-center gap-2">
+                                        <Activity className="w-4 h-4 text-zinc-500" />
                                         Recent_Activity
                                     </h3>
                                 </div>
                                 <div className="divide-y divide-zinc-100">
-                                    {tasks.map((task) => (
+                                    {tasks.slice(0, 2).map((task) => (
                                         <Link key={task.id} href={`/task/${task.id}`}>
-                                            <div className="p-4 hover:bg-zinc-50 transition-colors group">
+                                            <div className="p-4 hover:bg-zinc-50 transition-all group cursor-pointer">
                                                 <div className="flex items-start justify-between mb-2">
                                                     <TechBadge
                                                         variant={
@@ -518,12 +531,12 @@ export default function OptimizePage() {
                                                         {new Date(task.createdAt).toLocaleDateString()}
                                                     </span>
                                                 </div>
-                                                <h4 className="text-sm font-bold text-zinc-900 mb-1 font-mono group-hover:text-primary transition-colors truncate">
+                                                <h4 className="text-sm font-bold text-zinc-800 mb-1 font-mono group-hover:text-zinc-900 transition-colors truncate">
                                                     {task.name}
                                                 </h4>
                                                 {task.score && (
                                                     <div className="flex items-center gap-2 mt-2">
-                                                        <div className="text-xs font-bold text-primary font-mono bg-primary/5 px-2 py-0.5 rounded">
+                                                        <div className="text-xs font-bold text-emerald-600 font-mono bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
                                                             SCORE: {task.score}
                                                         </div>
                                                     </div>
@@ -531,7 +544,7 @@ export default function OptimizePage() {
                                                 {task.status === "optimizing" && (
                                                     <div className="mt-2 w-full bg-zinc-100 h-1 rounded-full overflow-hidden">
                                                         <motion.div
-                                                            className="h-full bg-primary"
+                                                            className="h-full bg-zinc-600"
                                                             initial={{ width: 0 }}
                                                             animate={{ width: `${task.progress}%` }}
                                                         />
@@ -541,25 +554,25 @@ export default function OptimizePage() {
                                         </Link>
                                     ))}
                                 </div>
-                                <div className="p-3 bg-zinc-50/50 border-t border-zinc-100 text-center">
-                                    <Link href="/tasks" className="text-[10px] font-bold text-zinc-500 hover:text-primary transition-colors uppercase tracking-wider font-mono flex items-center justify-center gap-1">
+                                <div className="p-3 bg-zinc-50/50 border-t border-zinc-100">
+                                    <Link href="/tasks" className="flex items-center justify-center gap-1.5 text-xs font-bold text-zinc-600 hover:text-zinc-900 transition-colors uppercase tracking-wider font-mono py-1.5 hover:bg-zinc-100 rounded-md">
                                         View_All_Tasks
-                                        <ArrowRight className="w-3 h-3" />
+                                        <ArrowRight className="w-3.5 h-3.5" />
                                     </Link>
                                 </div>
                             </DataModule>
 
-                            <DataModule className="p-5 bg-gradient-to-br from-primary/5 to-transparent border-primary/10">
+                            <DataModule className="p-5 bg-gradient-to-br from-sky-50 to-sky-100/30 border-sky-200/50">
                                 <div className="flex items-start gap-3">
-                                    <div className="p-2 bg-white rounded-lg shadow-sm">
-                                        <Lightbulb className="w-5 h-5 text-primary" />
+                                    <div className="p-2.5 bg-white rounded-lg shadow-sm border border-sky-100">
+                                        <Lightbulb className="w-5 h-5 text-sky-500" />
                                     </div>
                                     <div>
-                                        <h4 className="text-xs font-bold text-zinc-900 uppercase tracking-wider font-mono mb-1">
-                                            Pro_Tip
+                                        <h4 className="text-xs font-bold text-zinc-800 uppercase tracking-wider font-mono mb-1.5">
+                                            Quick_Tip
                                         </h4>
                                         <p className="text-xs text-zinc-600 leading-relaxed">
-                                            Providing a <span className="font-mono font-bold text-primary">Ground Truth</span> example significantly improves the accuracy of the optimization process by giving the model a clear target to aim for.
+                                            Add <span className="font-mono font-bold text-sky-600">3-5 diverse sample queries</span> covering different edge cases. More variety leads to better optimization results and helps the model handle real-world scenarios.
                                         </p>
                                     </div>
                                 </div>
@@ -568,6 +581,6 @@ export default function OptimizePage() {
                     </div>
                 </div >
             </div >
-        </TooltipProvider>
+        </TooltipProvider >
     );
 }
